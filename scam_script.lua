@@ -254,7 +254,7 @@ game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_k
 })
 
 MainTab:CreateButton({
-    Name = "Make Titan",
+    Name = "Claim Titan (wait 1 day or smtg)",
     Callback = function()
         for _, uuid in ipairs(selectedPetUUIDs) do
             -- Re-select each pet
