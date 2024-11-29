@@ -211,3 +211,58 @@ MainTab:CreateButton({
         end
     end,
 })
+
+-- Add Fire All Selected Pets Button
+MainTab:CreateButton({
+    Name = "Make Void",
+    Callback = function()
+        for _, uuid in ipairs(selectedPetUUIDs) do
+            -- Re-select each pet
+            local args = {uuid}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.VoidService.RE.StartCraft:FireServer(unpack(args))
+
+        end
+    end,
+})
+
+MainTab:CreateButton({
+    Name = "Claim Void (wait 1 day or smtg)",
+    Callback = function()
+        for _, uuid in ipairs(selectedPetUUIDs) do
+            -- Re-select each pet
+            local args = {uuid}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.VoidService.RE.ClaimPet:FireServer(unpack(args))
+
+        end
+    end,
+})
+
+-- Add Fire All Selected Pets Button
+MainTab:CreateButton({
+    Name = "Make Titan",
+    Callback = function()
+        for _, uuid in ipairs(selectedPetUUIDs) do
+            -- Re-select each pet
+            local args = {uuid}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.TitanService.RE.StartCraft:FireServer(unpack(args))
+
+        end
+    end,
+})
+
+MainTab:CreateButton({
+    Name = "Make Titan",
+    Callback = function()
+        for _, uuid in ipairs(selectedPetUUIDs) do
+            -- Re-select each pet
+            local args = {uuid}
+
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.TitanService.RE.ClaimPet:FireServer(unpack(args))
+
+        end
+    end,
+})
