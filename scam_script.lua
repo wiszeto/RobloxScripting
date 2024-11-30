@@ -306,7 +306,7 @@ RaceTab:CreateSlider({
                             local args = {
                                 [1] = "WinGate_16"
                             }
-                            game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.FightService.RE.GetWinsEvent:FireServer(unpack(args))
+                            KnitServices.FightService.RE.GetWinsEvent:FireServer(unpack(args))
                             task.wait()
                         end
                     end)
@@ -339,7 +339,7 @@ RaceTab:CreateToggle({
                         local args = {
                             [1] = "WinGate_16"
                         }
-                        game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.FightService.RE.GetWinsEvent:FireServer(unpack(args))
+                        KnitServices.FightService.RE.GetWinsEvent:FireServer(unpack(args))
                         task.wait()
                     end
                 end)
@@ -349,16 +349,15 @@ RaceTab:CreateToggle({
             isContestThreadRunning = true
             task.spawn(function()
                 while isRunning and isContestThreadRunning do
-                    local x = game:GetService("ReplicatedStorage").Packages["_Index"]["sleitnick_knit@1.5.1"].knit.Services.PlayerDataService.RF.GetAllData:InvokeServer()
+                    local x = KnitServices.PlayerDataService.RF.GetAllData:InvokeServer()
                     -- Check if 'x' is a table
                     if typeof(x) == "table" then
-                        for key, value in pairs(x) do
-                            if tostring(key) == "PlayerLocation" then
-                                print(value)
-                                game:GetService("ReplicatedStorage").Packages["_Index"]["sleitnick_knit@1.5.1"].knit.Services.FightService.RE.StartContest:FireServer(tostring(value))
-                                wait()
-                                game:GetService("ReplicatedStorage").Packages["_Index"]["sleitnick_knit@1.5.1"].knit.Services.FightService.RE.JoinContest:FireServer(tostring(value))
-                            end
+                        local playerLocation = x["PlayerLocation"]
+                        if playerLocation then
+                            print(playerLocation)
+                            KnitServices.FightService.RE.StartContest:FireServer(tostring(playerLocation))
+                            task.wait()
+                            KnitServices.FightService.RE.JoinContest:FireServer(tostring(playerLocation))
                         end
                     end
                     task.wait(1) -- Wait 1 second before next iteration
@@ -373,6 +372,16 @@ RaceTab:CreateToggle({
             end
             threads = {}
             isContestThreadRunning = false
+
+            -- Trigger the script when toggled off
+            local x = KnitServices.PlayerDataService.RF.GetAllData:InvokeServer()
+            if typeof(x) == "table" then
+                local playerLocation = x["PlayerLocation"]
+                if playerLocation then
+                    print(playerLocation)
+                    KnitServices.FightService.RE.QuitContestEvent:FireServer(tostring(playerLocation))
+                end
+            end
         end
     end,
 })
