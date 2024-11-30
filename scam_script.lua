@@ -301,6 +301,19 @@ end
 
 
 MainTab:CreateButton({
+    Name = "Join W3 (rejoin after clicking)",
+    Callback = function()
+
+        local args = {
+            [1] = "Area_3"
+        }
+        
+        game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.AreaService.RE.UpdatePlayerCurrentArea:FireServer(unpack(args))
+        
+    end,
+})
+
+MainTab:CreateButton({
     Name = "Join W3",
     Callback = function()
 
@@ -312,3 +325,76 @@ MainTab:CreateButton({
         
     end,
 })
+
+
+MainTab:CreateButton({
+    Name = "Save Data",
+    Callback = function()
+
+        local x = game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.PlayerDataService.RF.GetAllData:InvokeServer()
+
+        -- Prepare a table to store the output data
+        local outputData = {}
+        
+        -- Check if 'x.Pets' exists and is a table
+        if x and typeof(x) == "table" then
+            for key, petData in pairs(x) do
+                table.insert(outputData, "Key: " .. tostring(key))
+                if typeof(petData) == "table" then
+                    for petAttribute, petValue in pairs(petData) do
+                        table.insert(outputData, "  " .. tostring(petAttribute) .. ": " .. tostring(petValue))
+                    end
+                else
+                    table.insert(outputData, "  Value: " .. tostring(petData))
+                end
+            end
+        else
+            table.insert(outputData, "No 'Pets' key or it's not a table.")
+        end
+        
+        -- Combine the output data into a single string
+        local outputString = table.concat(outputData, "\n")
+        
+        -- Write the data to a file
+        writefile("PlayerData.txt", outputString)
+        
+        print("Data written to PlayerData.txt")
+        
+        -- Prepare a table to store the output data
+        local outputData = {}
+        
+        -- Recursive function to print table contents
+        local function recursivePrint(tbl, indent)
+            indent = indent or ""
+            if tbl == nil then
+                return
+            end
+            for key, value in pairs(tbl) do
+                if typeof(value) == "table" then
+                    table.insert(outputData, indent .. tostring(key) .. ":")
+                    recursivePrint(value, indent .. "  ")
+                else
+                    table.insert(outputData, indent .. tostring(key) .. ": " .. tostring(value))
+                end
+            end
+        end
+        
+        -- Check if 'x' exists and is a table
+        if x and typeof(x) == "table" then
+            recursivePrint(x)
+        else
+            table.insert(outputData, "'x' is not a table.")
+        end
+        
+        -- Combine the output data into a single string
+        local outputString = table.concat(outputData, "\n")
+        
+        -- Write the data to a file
+        writefile("PlayerData.txt", outputString)
+        
+        print("Data written to PlayerData.txt")
+        
+    end,
+})
+
+
