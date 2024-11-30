@@ -229,7 +229,7 @@ game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_k
 })
 
 MainTab:CreateButton({
-    Name = "Claim Void (wait 1 day or smtg)",
+    Name = "Claim Void (wait 5 hours)",
     Callback = function()
 
 local x = game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.PlayerDataService.RF.GetAllData:InvokeServer()
@@ -271,7 +271,7 @@ game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_k
 })
 
 MainTab:CreateButton({
-    Name = "Claim Titan (wait 1 day or smtg)",
+    Name = "Claim Titan (wait 5 hours)",
     Callback = function()
 local x = game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.PlayerDataService.RF.GetAllData:InvokeServer()
 
