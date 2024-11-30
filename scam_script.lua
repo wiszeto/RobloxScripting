@@ -1,3 +1,5 @@
+
+
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
@@ -229,13 +231,28 @@ game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_k
 MainTab:CreateButton({
     Name = "Claim Void (wait 1 day or smtg)",
     Callback = function()
-        for _, uuid in ipairs(selectedPetUUIDs) do
-            -- Re-select each pet
-            local args = {uuid}
 
-game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.VoidService.RE.ClaimPet:FireServer(unpack(args))
+local x = game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.PlayerDataService.RF.GetAllData:InvokeServer()
 
+-- Check if 'x.Pets' exists and is a table
+if x.PetsInVoidSlot and typeof(x.PetsInVoidSlot) == "table" then
+    for key, petData in pairs(x.PetsInVoidSlot) do
+        print("Pet Key:", key)
+        if typeof(petData) == "table" then
+            for petAttribute, petValue in pairs(petData) do
+                print("  ", petAttribute, ":", petValue)
+                if tostring(petAttribute) == "UUID" then
+                    print(petValue)
+                    game:GetService("ReplicatedStorage").Packages["_Index"]["sleitnick_knit@1.5.1"].knit.Services.VoidService.RE.ClaimPet:FireServer(tostring(petValue))
+                end
+            end
+        else
+            print("  Value:", petData)
         end
+    end
+else
+    print("No 'Pets' key or it's not a table.")
+end
     end,
 })
 
@@ -256,13 +273,28 @@ game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_k
 MainTab:CreateButton({
     Name = "Claim Titan (wait 1 day or smtg)",
     Callback = function()
-        for _, uuid in ipairs(selectedPetUUIDs) do
-            -- Re-select each pet
-            local args = {uuid}
+local x = game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.PlayerDataService.RF.GetAllData:InvokeServer()
 
+-- Check if 'x.Pets' exists and is a table
+if x.PetsInTitanSlot and typeof(x.PetsInTitanSlot) == "table" then
+    for key, petData in pairs(x.PetsInTitanSlot) do
+        print("Pet Key:", key)
+        if typeof(petData) == "table" then
+            for petAttribute, petValue in pairs(petData) do
+                print("  ", petAttribute, ":", petValue)
+                if tostring(petAttribute) == "UUID" then
+                    print(petValue)
+                    game:GetService("ReplicatedStorage").Packages["_Index"]["sleitnick_knit@1.5.1"].knit.Services.TitanService.RE.ClaimPet:FireServer(tostring(petValue))
 
-game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.TitanService.RE.ClaimPet:FireServer(unpack(args))
-
+                end
+            end
+        else
+            print("  Value:", petData)
         end
+    end
+else
+    print("No 'Pets' key or it's not a table.")
+end
+
     end,
 })
