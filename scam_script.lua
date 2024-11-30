@@ -277,3 +277,41 @@ MainTab:CreateToggle({
         end
     end,
 })
+
+
+local RaceTab = Window:CreateTab("Racing")
+local threadsValue = 1 -- Default value for threads
+
+RaceTab:CreateSlider({
+    Name = "Threads",
+    Range = {1, 1000},
+    Increment = 1,
+    Suffix = "threads",
+    CurrentValue = threadsValue,
+    Callback = function(Value)
+        threadsValue = Value
+    end,
+})
+
+local isRunning = false
+
+RaceTab:CreateToggle({
+    Name = "Start Farming Wins",
+    CurrentValue = false,
+    Callback = function(Value)
+        isRunning = Value
+        if isRunning then
+            for i = 1, threadsValue do
+                task.spawn(function()
+                    while isRunning do
+                        local args = {
+                            [1] = "WinGate_16"
+                        }
+                        game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.FightService.RE.GetWinsEvent:FireServer(unpack(args))
+                        task.wait()
+                    end
+                end)
+            end
+        end
+    end,
+})
