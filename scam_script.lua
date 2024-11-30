@@ -11,7 +11,7 @@ local Window = Rayfield:CreateWindow({
     DisableRayfieldPrompts = false,
     DisableBuildWarnings = false,
     ConfigurationSaving = {
-        Enabled = true,
+        Enabled = false,
         FolderName = nil,
         FileName = "Beamware"
     },
@@ -33,6 +33,7 @@ local Window = Rayfield:CreateWindow({
 })
 
 local MainTab = Window:CreateTab("Main")
+-- local TradeTab = Window:CreateTab("Trade")
 
 local delayValue = 0
 
