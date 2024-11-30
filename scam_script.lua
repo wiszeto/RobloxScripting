@@ -298,3 +298,17 @@ end
 
     end,
 })
+
+
+MainTab:CreateButton({
+    Name = "Join W3",
+    Callback = function()
+
+        local args = {
+            [1] = "Area_3"
+        }
+        
+        game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.AreaService.RE.UpdatePlayerCurrentArea:FireServer(unpack(args))
+        
+    end,
+})
