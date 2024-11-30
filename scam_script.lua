@@ -226,8 +226,8 @@ MainTab:CreateButton({
 
 
 
--- Racing Tab
-local RaceTab = Window:CreateTab("Racing")
+-- farming Tab
+local RaceTab = Window:CreateTab("farming")
 local threadsValue = 1 -- Default value for threads
 local isRunning = false
 local threads = {} -- Table to keep track of threads
@@ -334,7 +334,46 @@ RaceTab:CreateToggle({
     end,
 })
 
+local isActive1 = false
 
+RaceTab:CreateToggle({
+    Name = "Auto Rebirth",
+    CurrentValue = false,
+    Flag = "Toggle2",
+    Callback = function(Value)
+        isActive1 = Value
+        print("Toggle State Changed:", Value)
+        if isActive1 then
+            task.spawn(function()
+                while isActive1 do
+                    KnitServices.RebirthService.RF.Rebirth:InvokeServer()
+                    task.wait(1)
+                end
+            end)
+        end
+    end,
+})
+
+local isActive2 = false
+
+RaceTab:CreateToggle({
+    Name = "Auto Quest Egg",
+    CurrentValue = false,
+    Flag = "Toggle3",
+    Callback = function(Value)
+        isActive2 = Value
+        print("Toggle State Changed:", Value)
+        if isActive2 then
+            task.spawn(function()
+                while isActive2 do
+                    KnitServices.OnlineRewardService.RF.ClaimOnlineQuestReward:InvokeServer()
+                    
+                    task.wait(1)
+                end
+            end)
+        end
+    end,
+})
 
 --Misc Tab
 local MiscTab = Window:CreateTab("Misc")
