@@ -278,22 +278,51 @@ MainTab:CreateToggle({
     end,
 })
 
-
+-- Racing Tab
 local RaceTab = Window:CreateTab("Racing")
 local threadsValue = 1 -- Default value for threads
+local isRunning = false
+local threads = {} -- Table to keep track of threads
+local isContestThreadRunning = false -- Control for the separate thread
 
 RaceTab:CreateSlider({
     Name = "Threads",
-    Range = {1, 1000},
+    Range = {1, 50},
     Increment = 1,
     Suffix = "threads",
     CurrentValue = threadsValue,
     Callback = function(Value)
+        local previousThreadsValue = threadsValue
         threadsValue = Value
+
+        if isRunning then
+            if threadsValue > previousThreadsValue then
+                -- Add more threads
+                for i = previousThreadsValue + 1, threadsValue do
+                    threads[i] = { isThreadRunning = true }
+                    task.spawn(function()
+                        local threadIndex = i
+                        while isRunning and threads[threadIndex] and threads[threadIndex].isThreadRunning do
+                            local args = {
+                                [1] = "WinGate_16"
+                            }
+                            game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.FightService.RE.GetWinsEvent:FireServer(unpack(args))
+                            task.wait()
+                        end
+                    end)
+                end
+            elseif threadsValue < previousThreadsValue then
+                -- Stop extra threads
+                for i = threadsValue + 1, previousThreadsValue do
+                    if threads[i] then
+                        threads[i].isThreadRunning = false
+                        threads[i] = nil
+                    end
+                end
+            end
+        end
     end,
 })
-
-local isRunning = false
 
 RaceTab:CreateToggle({
     Name = "Start Farming Wins",
@@ -301,9 +330,12 @@ RaceTab:CreateToggle({
     Callback = function(Value)
         isRunning = Value
         if isRunning then
+            -- Start threads up to threadsValue
             for i = 1, threadsValue do
+                threads[i] = { isThreadRunning = true }
                 task.spawn(function()
-                    while isRunning do
+                    local threadIndex = i
+                    while isRunning and threads[threadIndex] and threads[threadIndex].isThreadRunning do
                         local args = {
                             [1] = "WinGate_16"
                         }
@@ -312,6 +344,35 @@ RaceTab:CreateToggle({
                     end
                 end)
             end
+
+            -- Start the separate thread that runs your provided code every 1 second
+            isContestThreadRunning = true
+            task.spawn(function()
+                while isRunning and isContestThreadRunning do
+                    local x = game:GetService("ReplicatedStorage").Packages["_Index"]["sleitnick_knit@1.5.1"].knit.Services.PlayerDataService.RF.GetAllData:InvokeServer()
+                    -- Check if 'x' is a table
+                    if typeof(x) == "table" then
+                        for key, value in pairs(x) do
+                            if tostring(key) == "PlayerLocation" then
+                                print(value)
+                                game:GetService("ReplicatedStorage").Packages["_Index"]["sleitnick_knit@1.5.1"].knit.Services.FightService.RE.StartContest:FireServer(tostring(value))
+                                wait()
+                                game:GetService("ReplicatedStorage").Packages["_Index"]["sleitnick_knit@1.5.1"].knit.Services.FightService.RE.JoinContest:FireServer(tostring(value))
+                            end
+                        end
+                    end
+                    task.wait(1) -- Wait 1 second before next iteration
+                end
+            end)
+        else
+            -- Stop all threads
+            for i = 1, #threads do
+                if threads[i] then
+                    threads[i].isThreadRunning = false
+                end
+            end
+            threads = {}
+            isContestThreadRunning = false
         end
     end,
 })
