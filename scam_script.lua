@@ -222,61 +222,9 @@ MainTab:CreateButton({
     end,
 })
 
-MainTab:CreateButton({
-    Name = "Join W3 (rejoin after clicking)",
-    Callback = function()
-        KnitServices.AreaService.RE.UpdatePlayerCurrentArea:FireServer("Area_3")
-    end,
-})
 
-MainTab:CreateButton({
-    Name = "Save Data",
-    Callback = function()
-        local x = KnitServices.PlayerDataService.RF.GetAllData:InvokeServer()
-        local outputData = {}
 
-        local function recursivePrint(tbl, indent)
-            indent = indent or ""
-            for key, value in pairs(tbl or {}) do
-                if typeof(value) == "table" then
-                    table.insert(outputData, indent .. tostring(key) .. ":")
-                    recursivePrint(value, indent .. "  ")
-                else
-                    table.insert(outputData, indent .. tostring(key) .. ": " .. tostring(value))
-                end
-            end
-        end
 
-        if typeof(x) == "table" then
-            recursivePrint(x)
-        else
-            table.insert(outputData, "'x' is not a table.")
-        end
-
-        writefile("PlayerData.txt", table.concat(outputData, "\n"))
-        print("Data written to PlayerData.txt")
-    end,
-})
-
-local isActive = false
-
-MainTab:CreateToggle({
-    Name = "Potion Spam",
-    CurrentValue = false,
-    Flag = "Toggle1",
-    Callback = function(Value)
-        isActive = Value
-        print("Toggle State Changed:", Value)
-        if isActive then
-            task.spawn(function()
-                while isActive do
-                    KnitServices.ChestService.RF.ClaimDailyChest:InvokeServer()
-                    task.wait()
-                end
-            end)
-        end
-    end,
-})
 
 -- Racing Tab
 local RaceTab = Window:CreateTab("Racing")
@@ -383,5 +331,82 @@ RaceTab:CreateToggle({
                 end
             end
         end
+    end,
+})
+
+
+
+--Misc Tab
+local MiscTab = Window:CreateTab("Misc")
+
+local isActive = false
+
+MiscTab:CreateToggle({
+    Name = "Potion Spam",
+    CurrentValue = false,
+    Flag = "Toggle1",
+    Callback = function(Value)
+        isActive = Value
+        print("Toggle State Changed:", Value)
+        if isActive then
+            task.spawn(function()
+                while isActive do
+                    KnitServices.ChestService.RF.ClaimDailyChest:InvokeServer()
+                    task.wait()
+                end
+            end)
+        end
+    end,
+})
+
+MiscTab:CreateButton({
+    Name = "Join W3 (rejoin after clicking)",
+    Callback = function()
+        KnitServices.AreaService.RE.UpdatePlayerCurrentArea:FireServer("Area_3")
+    end,
+})
+
+MiscTab:CreateButton({
+    Name = "Super Rebirth (30+ Rebirths I think)",
+    Callback = function()
+        KnitServices.RebirthService.RF.SuperRebirth:InvokeServer()
+
+    end,
+})
+
+MiscTab:CreateButton({
+    Name = "Super Rebirth Upgrades",
+    Callback = function()
+        local x = game:GetService("Players").Cupcak3Girl2020.PlayerGui.RebirthUpgradeGui
+        x.Enabled = true
+    end,
+})
+
+MiscTab:CreateButton({
+    Name = "Save Data",
+    Callback = function()
+        local x = KnitServices.PlayerDataService.RF.GetAllData:InvokeServer()
+        local outputData = {}
+
+        local function recursivePrint(tbl, indent)
+            indent = indent or ""
+            for key, value in pairs(tbl or {}) do
+                if typeof(value) == "table" then
+                    table.insert(outputData, indent .. tostring(key) .. ":")
+                    recursivePrint(value, indent .. "  ")
+                else
+                    table.insert(outputData, indent .. tostring(key) .. ": " .. tostring(value))
+                end
+            end
+        end
+
+        if typeof(x) == "table" then
+            recursivePrint(x)
+        else
+            table.insert(outputData, "'x' is not a table.")
+        end
+
+        writefile("PlayerData.txt", table.concat(outputData, "\n"))
+        print("Data written to PlayerData.txt")
     end,
 })
