@@ -397,6 +397,12 @@ MiscTab:CreateToggle({
         end
     end,
 })
+MiscTab:CreateButton({
+    Name = "Join W2 (rejoin after clicking)",
+    Callback = function()
+        KnitServices.AreaService.RE.UpdatePlayerCurrentArea:FireServer("Area_2")
+    end,
+})
 
 MiscTab:CreateButton({
     Name = "Join W3 (rejoin after clicking)",
