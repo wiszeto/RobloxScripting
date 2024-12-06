@@ -6,7 +6,7 @@ local Window = Rayfield:CreateWindow({
     LoadingTitle = "Beam Hub",
     LoadingSubtitle = "by willievibes",
     Theme = "Default",
-    DisableRayfieldPrompts = false,
+    DisableRayfieldPrompts = true,
     DisableBuildWarnings = false,
     ConfigurationSaving = {
         Enabled = false,
@@ -15,7 +15,7 @@ local Window = Rayfield:CreateWindow({
     },
     Discord = {
         Enabled = false,
-        Invite = "noinvitelink",
+        Invite = "https://discord.gg/um7X9FtQmt",
         RememberJoins = true
     },
     KeySystem = false,
@@ -397,6 +397,7 @@ MiscTab:CreateToggle({
         end
     end,
 })
+
 MiscTab:CreateButton({
     Name = "Join W2 (rejoin after clicking)",
     Callback = function()
@@ -412,7 +413,7 @@ MiscTab:CreateButton({
 })
 
 MiscTab:CreateButton({
-    Name = "Super Rebirth (30+ Rebirths I think)",
+    Name = "Super Rebirth (30+ Rebirths, will reset all your stats)",
     Callback = function()
         KnitServices.RebirthService.RF.SuperRebirth:InvokeServer()
 
