@@ -18,15 +18,15 @@ local Window = Rayfield:CreateWindow({
         Invite = "https://discord.gg/um7X9FtQmt",
         RememberJoins = true
     },
-    KeySystem = false,
+    KeySystem = true,
     KeySettings = {
-        Title = "Untitled",
+        Title = "BeamHub",
         Subtitle = "Key System",
-        Note = "No method of obtaining the key is provided",
+        Note = "msg willievibes on discord",
         FileName = "Key",
-        SaveKey = true,
+        SaveKey = false,
         GrabKeyFromSite = false,
-        Key = {"Hello"}
+        Key = {"kewns"}
     }
 })
 
@@ -369,6 +369,84 @@ RaceTab:CreateToggle({
                     KnitServices.OnlineRewardService.RF.ClaimOnlineQuestReward:InvokeServer()
                     
                     task.wait(1)
+                end
+            end)
+        end
+    end,
+})
+
+
+-- Reference to the Eggs folder
+local EggFolder = game:GetService("ReplicatedStorage"):WaitForChild("Eggs")
+
+-- Build a list of all egg names
+local EggOptions = {}
+for _, egg in ipairs(EggFolder:GetChildren()) do
+   table.insert(EggOptions, egg.Name)
+end
+
+-- Variable to store the currently selected egg
+local selectedEgg = EggOptions[1] or nil
+
+-- Create a new tab for Eggs
+local EggTab = Window:CreateTab("Eggs")
+
+-- Create a dropdown in the Egg tab
+local EggDropdown = EggTab:CreateDropdown({
+   Name = "Select Egg",
+   Options = EggOptions,
+   CurrentOption = {EggOptions[1]}, -- Set a default option if available
+   MultipleOptions = false,
+   Flag = "SelectedEgg",
+   Callback = function(Options)
+      -- Update selectedEgg whenever the dropdown selection changes
+      selectedEgg = Options[1]
+   end,
+})
+
+
+EggTab:CreateButton({
+    Name = "Hatch Egg",
+    Callback = function()
+        if selectedEgg then
+            local args = {
+                [1] = selectedEgg, -- Use the currently selected egg from the dropdown
+                [2] = 1
+            }
+
+            game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1")
+                .knit.Services.EggHatchService.RE.Hatch:FireServer(unpack(args))
+        else
+            warn("No egg selected!")
+        end
+    end,
+})
+
+
+local isActiveegg = false
+
+EggTab:CreateToggle({
+    Name = "Auto Hatch",
+    CurrentValue = false,
+    Flag = "Toggleegg",
+    Callback = function(Value)
+        isActiveegg = Value
+        print("Toggle State Changed:", Value)
+        if isActiveegg then
+            task.spawn(function()
+                while isActiveegg do
+                    if selectedEgg then
+                        local args = {
+                            [1] = selectedEgg, -- Use the currently selected egg from the dropdown
+                            [2] = 1
+                        }
+            
+                        game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1")
+                            .knit.Services.EggHatchService.RE.Hatch:FireServer(unpack(args))
+                    else
+                        warn("No egg selected!")
+                    end
+                    task.wait()
                 end
             end)
         end
