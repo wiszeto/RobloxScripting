@@ -18,7 +18,7 @@ local Window = Rayfield:CreateWindow({
         Invite = "https://discord.gg/um7X9FtQmt",
         RememberJoins = true
     },
-    KeySystem = true,
+    KeySystem = false,
     KeySettings = {
         Title = "BeamHub",
         Subtitle = "Key System",
@@ -26,7 +26,7 @@ local Window = Rayfield:CreateWindow({
         FileName = "Key",
         SaveKey = false,
         GrabKeyFromSite = false,
-        Key = {"kewns"}
+        Key = {""}
     }
 })
 
