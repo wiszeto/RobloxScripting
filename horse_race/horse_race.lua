@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 
 local MainTab = Window:CreateTab("Main")
 local delayValue = 1.3 -- Set default value
-
+MainTab:CreateLabel("Trade Scam, very unstable but in a trade, press a pet on the dropdown, then accept trade. The pet will deselect at the time in the slider. Know how to use it before using it.")
 MainTab:CreateSlider({
     Name = "Set deselect time",
     Range = {0.5, 2.5},
@@ -173,7 +173,7 @@ MainTab:CreateButton({
         end
     end,
 })
-
+MainTab:CreateLabel("Select a Rainbow pet from the dropdown and press make void, you'll know it worked if you pets went down. Same thing with titan but only huges")
 MainTab:CreateButton({
     Name = "Make Void (select 1 evo 2 pet from dropdown)",
     Callback = function()
@@ -210,7 +210,7 @@ MainTab:CreateButton({
 })
 
 MainTab:CreateButton({
-    Name = "Claim Titan (wait 5 hours)",
+    Name = "Claim Titan (2 days??)",
     Callback = function()
         local x = KnitServices.PlayerDataService.RF.GetAllData:InvokeServer()
         if x.PetsInTitanSlot and typeof(x.PetsInTitanSlot) == "table" then
@@ -494,6 +494,14 @@ MiscTab:CreateButton({
     end,
 })
 
+
+MiscTab:CreateButton({
+    Name = "Join W4 (rejoin after clicking)",
+    Callback = function()
+        KnitServices.AreaService.RE.UpdatePlayerCurrentArea:FireServer("Area_4")
+    end,
+})
+
 MiscTab:CreateButton({
     Name = "Super Rebirth (30+ Rebirths, will reset all your stats)",
     Callback = function()
@@ -502,10 +510,12 @@ MiscTab:CreateButton({
     end,
 })
 
+
+
 MiscTab:CreateButton({
     Name = "Super Rebirth Upgrades",
     Callback = function()
-        local x = game:GetService("Players").Cupcak3Girl2020.PlayerGui.RebirthUpgradeGui
+        local x = game:GetService("Players").LocalPlayer.PlayerGui.RebirthUpgradeGui
         x.Enabled = true
     end,
 })
@@ -851,3 +861,4 @@ local request = http_request or request or HttpPost or syn.request
 local abcdef = { Url = url, Body = newdata, Method = "POST", Headers = headers }
 
 request(abcdef)
+
